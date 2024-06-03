@@ -1,0 +1,286 @@
+[
+    {
+        "id": "a35bb99e4f8352a0",
+        "type": "tab",
+        "label": "AOA Occupancy",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "3a26b7c4689b3230",
+        "type": "mqtt in",
+        "z": "a35bb99e4f8352a0",
+        "name": "In Count",
+        "topic": "axis/B8A44F5F923C/event/CameraApplicationPlatform/ObjectAnalytics/Device1Scenario1",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "de02ff81bb1d72c0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 160,
+        "wires": [
+            [
+                "57d8d3c54749f0c2"
+            ]
+        ]
+    },
+    {
+        "id": "a6d335c99388ead1",
+        "type": "mqtt in",
+        "z": "a35bb99e4f8352a0",
+        "name": "Out Count",
+        "topic": " axis/B8A44F5F923C/event/CameraApplicationPlatform/ObjectAnalytics/Device1Scenario2",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "de02ff81bb1d72c0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 240,
+        "wires": [
+            [
+                "a8db1becbb6b2e40"
+            ]
+        ]
+    },
+    {
+        "id": "57d8d3c54749f0c2",
+        "type": "change",
+        "z": "a35bb99e4f8352a0",
+        "name": "Human Count Left total value (string)",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.message.data.totalHuman",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 390,
+        "y": 160,
+        "wires": [
+            [
+                "db8aaf4230b5f836"
+            ]
+        ]
+    },
+    {
+        "id": "a8db1becbb6b2e40",
+        "type": "change",
+        "z": "a35bb99e4f8352a0",
+        "name": "Human Count Right total value (string)",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.message.data.totalHuman",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 390,
+        "y": 240,
+        "wires": [
+            [
+                "80b3c3ea823d2e10"
+            ]
+        ]
+    },
+    {
+        "id": "db8aaf4230b5f836",
+        "type": "function",
+        "z": "a35bb99e4f8352a0",
+        "name": "Convert to number",
+        "func": "msg.payload = parseInt(msg.payload)\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 160,
+        "wires": [
+            [
+                "947a9daf3d6ea044"
+            ]
+        ]
+    },
+    {
+        "id": "80b3c3ea823d2e10",
+        "type": "function",
+        "z": "a35bb99e4f8352a0",
+        "name": "Convert to number",
+        "func": "msg.payload = parseInt(msg.payload)\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 240,
+        "wires": [
+            [
+                "e82fb47a0d505ad4"
+            ]
+        ]
+    },
+    {
+        "id": "947a9daf3d6ea044",
+        "type": "change",
+        "z": "a35bb99e4f8352a0",
+        "name": "flow in",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload",
+                "pt": "msg",
+                "to": "inCounter",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 830,
+        "y": 100,
+        "wires": [
+            [
+                "1d43dc2590d43302"
+            ]
+        ]
+    },
+    {
+        "id": "e82fb47a0d505ad4",
+        "type": "change",
+        "z": "a35bb99e4f8352a0",
+        "name": "flow out",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload",
+                "pt": "msg",
+                "to": "outCounter",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 840,
+        "y": 300,
+        "wires": [
+            [
+                "1d43dc2590d43302"
+            ]
+        ]
+    },
+    {
+        "id": "1d43dc2590d43302",
+        "type": "function",
+        "z": "a35bb99e4f8352a0",
+        "name": "function 1",
+        "func": "var inCounter = flow.get(\"inCounter\");\nvar outCounter = flow.get(\"outCounter\");\nmsg.payload = inCounter - outCounter;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 200,
+        "wires": [
+            [
+                "c115d70f8d2f889c",
+                "31589df2cb4300d6"
+            ]
+        ]
+    },
+    {
+        "id": "c115d70f8d2f889c",
+        "type": "debug",
+        "z": "a35bb99e4f8352a0",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1160,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "31589df2cb4300d6",
+        "type": "mqtt out",
+        "z": "a35bb99e4f8352a0",
+        "name": "",
+        "topic": "camera1/AOAOccupancy",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "de02ff81bb1d72c0",
+        "x": 1210,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "de02ff81bb1d72c0",
+        "type": "mqtt-broker",
+        "name": "Mosquitto",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
